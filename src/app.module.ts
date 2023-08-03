@@ -12,6 +12,7 @@ import { TasksModule } from './tasks/tasks.module';
 import config from 'ormconfig';
 import { ContactInfoModule } from './contact-info/contact-info.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { AbilityModule } from './ability/ability.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     MeetingsModule,
     TasksModule,
     ContactInfoModule,
+    AbilityModule,
   ],
   controllers: [AppController],
   providers: [AppService],
