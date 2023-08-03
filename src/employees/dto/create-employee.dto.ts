@@ -1,21 +1,20 @@
-import { ContactInfo } from 'src/contact-info/entities/contact-info.entity';
-import { Meeting } from 'src/meetings/entities/meeting.entity';
-import { Task } from 'src/tasks/entities/task.entity';
-import { Employee } from '../entities/employee.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { CreateContactInfoDto } from 'src/contact-info/dto/create-contact-info.dto';
+import { CreateTaskDto } from 'src/tasks/dto/create-task.dto';
+import { CreateMeetingDto } from 'src/meetings/dto/create-meeting.dto';
 
 export class CreateEmployeeDto {
   @ApiProperty()
   name: string;
 
   @ApiProperty()
-  manager: Employee;
+  manager: CreateEmployeeDto;
 
-  directReports: Employee[];
+  directReports: CreateEmployeeDto[];
 
-  contactInfo: ContactInfo;
+  contactInfo: CreateContactInfoDto;
 
-  tasks: Task[];
+  tasks: CreateTaskDto[];
 
-  meetings: Meeting[];
+  meetings: CreateMeetingDto[];
 }
