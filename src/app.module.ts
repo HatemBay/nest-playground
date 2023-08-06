@@ -13,6 +13,7 @@ import config from 'ormconfig';
 import { ContactInfoModule } from './contact-info/contact-info.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { AbilityModule } from './ability/ability.module';
+import { RolesModule } from './roles/roles.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { AbilityModule } from './ability/ability.module';
     TasksModule,
     ContactInfoModule,
     AbilityModule,
+    RolesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

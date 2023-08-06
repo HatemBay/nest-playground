@@ -38,7 +38,7 @@ export class ContactInfoService {
 
   async update(
     id: number,
-    // updateContactInfoDto: UpdateContactInfoDto,
+    updateContactInfoDto: UpdateContactInfoDto,
   ): Promise<ContactInfo> {
     const contactInfo = await this.findOne(id);
     // TODO: uncomment the lines in this method code when other fields than id are added
