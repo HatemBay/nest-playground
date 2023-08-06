@@ -1,6 +1,5 @@
 import {
   AbilityBuilder,
-  AbilityClass,
   ExtractSubjectType,
   InferSubjects,
   MongoAbility,
