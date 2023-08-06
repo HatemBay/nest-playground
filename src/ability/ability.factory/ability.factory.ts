@@ -31,9 +31,17 @@ export class AbilityFactory {
 
     const roles = user.roles.map((role) => role.name);
 
-    if (roles.indexOf('ADMIN') !== -1) {
+    const userIsAdmin = roles.indexOf('ADMIN') !== -1;
+
+    if (userIsAdmin) {
       can(Action.Manage, 'all');
-    } else can(Action.Read, User);
+      cannot(Action.Manage, User, { orgId: { $ne: user.orgId } }).because(
+        'you can only manage uses that are in your same organisation',
+      );
+    } else {
+      can(Action.Read, User);
+      cannot(Action.Create, User).because('only admin can');
+    }
     return build({
       detectSubjectType: (item) =>
         item.constructor as ExtractSubjectType<Subjects>,

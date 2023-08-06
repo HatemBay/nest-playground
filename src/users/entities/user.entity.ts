@@ -26,6 +26,9 @@ export class User {
   @Column()
   password: string;
 
+  @Column({ nullable: true })
+  orgId: number;
+
   @OneToMany(() => Pet, (pet) => pet.owner)
   pets: Pet[];
 

@@ -5,6 +5,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { OnEvent } from '@nestjs/event-emitter';
+import {
+  AbilityFactory,
+  Action,
+} from 'src/ability/ability.factory/ability.factory';
+import { ForbiddenError } from '@casl/ability';
 
 // export type User = {
 //   id: number;
@@ -32,11 +37,19 @@ export class UsersService {
 
   constructor(
     @InjectRepository(User) private usersRepository: Repository<User>,
+    private abilityFactory: AbilityFactory,
   ) {}
 
-  async createUser(createUserDto: CreateUserDto): Promise<User> {
+  async createUser(
+    createUserDto: CreateUserDto,
+    currentUser: User,
+  ): Promise<User> {
+    const ability = this.abilityFactory.defineAbility(currentUser);
+
     const newUser = this.usersRepository.create(createUserDto);
 
+    // * if we don't specify cannot() and because('') in the factory we instead use .SetMessage('') after .from()
+    ForbiddenError.from(ability).throwUnlessCan(Action.Create, newUser);
     return await this.usersRepository.save(newUser);
   }
 
@@ -89,15 +102,21 @@ export class UsersService {
     }
   }
 
-  async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.findOneById(id);
-    if (user) {
-      user.name = updateUserDto.name;
-      user.username = updateUserDto.username;
-      user.password = updateUserDto.password;
-      user.roles = updateUserDto.roles;
+  async updateUser(
+    id: number,
+    updateUserDto: UpdateUserDto,
+    currentUser: User,
+  ): Promise<User> {
+    const ability = this.abilityFactory.defineAbility(currentUser);
 
-      return await this.usersRepository.save(user);
+    const userToUpdate = await this.findOneById(id);
+    if (userToUpdate) {
+      ForbiddenError.from(ability).throwUnlessCan(Action.Update, userToUpdate);
+
+      return await this.usersRepository.save({
+        ...userToUpdate,
+        ...updateUserDto,
+      });
     }
   }
 

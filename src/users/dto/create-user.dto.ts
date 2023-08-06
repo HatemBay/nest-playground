@@ -12,6 +12,8 @@ export class CreateUserDto {
   @IsString()
   password: string;
 
+  orgId: number;
+
   pets: CreatePetDto[];
 
   // * if i use createRoleDto instead of role i wouldn't be able to update the user's role
