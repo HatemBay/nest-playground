@@ -1,6 +1,14 @@
 import { IsNotEmpty, IsOptional } from 'class-validator';
 import { Pet } from 'src/pets/entities/pet.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Role } from 'src/roles/entities/role.entity';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -12,7 +20,7 @@ export class User {
   @IsNotEmpty()
   name?: string;
 
-  @Column()
+  @Column({ unique: true })
   username: string;
 
   @Column()
@@ -20,4 +28,8 @@ export class User {
 
   @OneToMany(() => Pet, (pet) => pet.owner)
   pets: Pet[];
+
+  @ManyToMany(() => Role, (role) => role.users)
+  @JoinTable()
+  roles: Role[];
 }

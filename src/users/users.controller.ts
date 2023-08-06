@@ -6,18 +6,33 @@ import {
   Patch,
   Param,
   Delete,
+  Request,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { AbilityFactory } from 'src/ability/ability.factory/ability.factory';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('users')
+@UseGuards(JwtAuthGuard)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private abilityFactory: AbilityFactory,
+  ) {}
 
   @Post()
-  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
+  async create(
+    @Body() createUserDto: CreateUserDto,
+    @Request() req,
+  ): Promise<User> {
+    const user = req.user;
+    // const ability = this.abilityFactory.defineAbility(user);
+    console.log(user);
+
     return await this.usersService.createUser(createUserDto);
   }
 

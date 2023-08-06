@@ -41,15 +41,16 @@ export class UsersService {
   }
 
   async findAll(): Promise<User[]> {
-    return this.usersRepository.find({ relations: ['pets'] });
+    return this.usersRepository.find({ relations: ['pets', 'roles'] });
   }
 
   async findOneById(id: number): Promise<User> {
     try {
-      return await this.usersRepository.findOneOrFail({
+      const user = await this.usersRepository.findOneOrFail({
         where: { id: id },
-        relations: ['pets'],
+        relations: ['pets', 'roles'],
       });
+      return user;
     } catch (err) {
       throw err;
     }
@@ -62,6 +63,7 @@ export class UsersService {
     try {
       const user = await this.usersRepository.findOneOrFail({
         where: { username: username },
+        relations: ['roles', 'pets'],
       });
       return user;
     } catch (err) {
@@ -79,6 +81,7 @@ export class UsersService {
     try {
       const user = await this.usersRepository.findOneOrFail({
         where: { username: username },
+        relations: ['roles', 'pets'],
       });
       return user;
     } catch (err) {
@@ -89,13 +92,10 @@ export class UsersService {
   async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.findOneById(id);
     if (user) {
-      if (updateUserDto.name) {
-        user.name = updateUserDto.name;
-      }
+      user.name = updateUserDto.name;
       user.username = updateUserDto.username;
-      if (updateUserDto.password) {
-        user.password = updateUserDto.password;
-      }
+      user.password = updateUserDto.password;
+      user.roles = updateUserDto.roles;
 
       return await this.usersRepository.save(user);
     }

@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
-import { Pet } from 'src/pets/entities/pet.entity';
-import { OneToMany } from 'typeorm';
+import { CreatePetDto } from 'src/pets/dto/create-pet.dto';
+import { Role } from 'src/roles/entities/role.entity';
 
 export class CreateUserDto {
   @IsString()
@@ -12,6 +12,9 @@ export class CreateUserDto {
   @IsString()
   password: string;
 
-  @OneToMany(() => Pet, (pet) => pet.owner)
-  pets: Pet[];
+  pets: CreatePetDto[];
+
+  // * if i use createRoleDto instead of role i wouldn't be able to update the user's role
+  // * since request the role's id will be requested which won't be in the dto
+  roles: Role[];
 }
