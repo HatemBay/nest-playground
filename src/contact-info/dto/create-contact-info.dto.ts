@@ -1,4 +1,4 @@
-import { CreateEmployeeDto } from 'src/employees/dto/create-employee.dto';
+import { CreateEmployeeDto } from '../../employees/dto/create-employee.dto';
 
 export class CreateContactInfoDto {
   employee: CreateEmployeeDto;

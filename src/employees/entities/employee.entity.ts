@@ -1,6 +1,3 @@
-import { ContactInfo } from 'src/contact-info/entities/contact-info.entity';
-import { Meeting } from 'src/meetings/entities/meeting.entity';
-import { Task } from 'src/tasks/entities/task.entity';
 import {
   Column,
   Entity,
@@ -10,7 +7,11 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
+  Relation,
 } from 'typeorm';
+import { ContactInfo } from '../../contact-info/entities/contact-info.entity';
+import { Meeting } from '../../meetings/entities/meeting.entity';
+import { Task } from '../../tasks/entities/task.entity';
 
 @Entity()
 export class Employee {
@@ -21,18 +22,18 @@ export class Employee {
   name: string;
 
   @ManyToOne(() => Employee, (e) => e.directReports, { onDelete: 'SET NULL' })
-  manager: Employee;
+  manager: Relation<Employee>;
 
   @OneToMany(() => Employee, (e) => e.manager)
-  directReports: Employee[];
+  directReports: Relation<Employee[]>;
 
   @OneToOne(() => ContactInfo, (contactInfo) => contactInfo.employee)
-  contactInfo: ContactInfo;
+  contactInfo: Relation<ContactInfo>;
 
   @OneToMany(() => Task, (task) => task.employee)
-  tasks: Task[];
+  tasks: Relation<Task[]>;
 
   @ManyToMany(() => Meeting, (meeting) => meeting.attendees)
   @JoinTable()
-  meetings: Meeting[];
+  meetings: Relation<Meeting[]>;
 }

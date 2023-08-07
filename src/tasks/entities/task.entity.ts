@@ -1,5 +1,11 @@
-import { Employee } from 'src/employees/entities/employee.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Relation,
+} from 'typeorm';
+import { Employee } from '../../employees/entities/employee.entity';
 
 @Entity()
 export class Task {
@@ -12,5 +18,5 @@ export class Task {
   @ManyToOne(() => Employee, (employee) => employee.tasks, {
     onDelete: 'SET NULL',
   })
-  employee: Employee;
+  employee: Relation<Employee>;
 }

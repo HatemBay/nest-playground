@@ -15,7 +15,7 @@ import {
 import { CreateNinjaDto } from './dto/create-ninja.dto';
 import { NinjasService } from './ninjas.service';
 import { UpdateNinjaDto } from './dto/update-ninja.dto';
-import { BeltGuard } from 'src/belt/belt.guard';
+import { BeltGuard } from '../belt/belt.guard';
 
 @Controller('ninjas')
 export class NinjasController {

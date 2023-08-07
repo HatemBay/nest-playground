@@ -6,7 +6,7 @@ import {
   createMongoAbility,
 } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
-import { User } from 'src/users/entities/user.entity';
+import { User } from '../../users/entities/user.entity';
 
 export enum Action {
   Manage = 'manage',

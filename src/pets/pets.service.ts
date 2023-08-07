@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePetDto } from './dto/create-pet.dto';
-import { UpdatePetDto } from './dto/update-pet.dtp';
+import { OnEvent } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { TaskCreatedEvent } from '../tasks/dto/task-created.event';
+import { CreatePetDto } from './dto/create-pet.dto';
+import { UpdatePetDto } from './dto/update-pet.dtp';
 import { Pet } from './entities/pet.entity';
-import { OnEvent } from '@nestjs/event-emitter';
-import { TaskCreatedEvent } from 'src/tasks/dto/task-created.event';
 
 @Injectable()
 export class PetsService {

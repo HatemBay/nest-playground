@@ -1,16 +1,16 @@
 import {
-  Body,
   Controller,
-  Delete,
+  Post,
+  Body,
   Get,
   Param,
   Patch,
-  Post,
+  Delete,
 } from '@nestjs/common';
-import { PetsService } from './pets.service';
 import { CreatePetDto } from './dto/create-pet.dto';
-import { Pet } from './entities/pet.entity';
 import { UpdatePetDto } from './dto/update-pet.dtp';
+import { Pet } from './entities/pet.entity';
+import { PetsService } from './pets.service';
 
 @Controller('pets')
 export class PetsController {

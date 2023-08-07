@@ -5,11 +5,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { OnEvent } from '@nestjs/event-emitter';
+import { ForbiddenError } from '@casl/ability';
 import {
   AbilityFactory,
   Action,
-} from 'src/ability/ability.factory/ability.factory';
-import { ForbiddenError } from '@casl/ability';
+} from '../ability/ability.factory/ability.factory';
 
 // export type User = {
 //   id: number;

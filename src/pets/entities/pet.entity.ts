@@ -1,6 +1,12 @@
 import { IsString } from 'class-validator';
-import { User } from 'src/users/entities/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Relation,
+} from 'typeorm';
+import { User } from '../../users/entities/user.entity';
 
 @Entity()
 export class Pet {
@@ -12,5 +18,5 @@ export class Pet {
   name: string;
 
   @ManyToOne(() => User, (user) => user.pets)
-  owner: User;
+  owner: Relation<User>;
 }

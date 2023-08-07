@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
-import { CreatePetDto } from 'src/pets/dto/create-pet.dto';
-import { Role } from 'src/roles/entities/role.entity';
+import { CreatePetDto } from '../../pets/dto/create-pet.dto';
+import { Role } from '../../roles/entities/role.entity';
 
 export class CreateUserDto {
   @IsString()

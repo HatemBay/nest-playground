@@ -9,11 +9,11 @@ import { PetsModule } from './pets/pets.module';
 import { EmployeesModule } from './employees/employees.module';
 import { MeetingsModule } from './meetings/meetings.module';
 import { TasksModule } from './tasks/tasks.module';
-import config from 'ormconfig';
 import { ContactInfoModule } from './contact-info/contact-info.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { AbilityModule } from './ability/ability.module';
 import { RolesModule } from './roles/roles.module';
+import config from './ormconfig';
 
 @Module({
   imports: [

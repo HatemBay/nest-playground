@@ -1,6 +1,4 @@
 import { IsNotEmpty, IsOptional } from 'class-validator';
-import { Pet } from 'src/pets/entities/pet.entity';
-import { Role } from 'src/roles/entities/role.entity';
 import {
   Column,
   Entity,
@@ -8,7 +6,10 @@ import {
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
+  Relation,
 } from 'typeorm';
+import { Pet } from '../../pets/entities/pet.entity';
+import { Role } from '../../roles/entities/role.entity';
 
 @Entity()
 export class User {
@@ -30,9 +31,9 @@ export class User {
   orgId: number;
 
   @OneToMany(() => Pet, (pet) => pet.owner)
-  pets: Pet[];
+  pets: Relation<Pet[]>;
 
   @ManyToMany(() => Role, (role) => role.users)
   @JoinTable()
-  roles: Role[];
+  roles: Relation<Role[]>;
 }

@@ -1,5 +1,11 @@
-import { Employee } from 'src/employees/entities/employee.entity';
-import { Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  Relation,
+} from 'typeorm';
+import { Employee } from '../../employees/entities/employee.entity';
 
 @Entity()
 export class ContactInfo {
@@ -10,5 +16,5 @@ export class ContactInfo {
     onDelete: 'CASCADE',
   })
   @JoinColumn()
-  employee: Employee;
+  employee: Relation<Employee>;
 }

@@ -14,14 +14,14 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { ForbiddenError } from '@casl/ability';
+import { CheckAbilities } from '../ability/ability.decorator';
 import {
   AbilityFactory,
   Action,
-} from 'src/ability/ability.factory/ability.factory';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { ForbiddenError } from '@casl/ability';
-import { CheckAbilities } from 'src/ability/ability.decorator';
-import { AbilityGuard } from 'src/ability/ability.guard';
+} from '../ability/ability.factory/ability.factory';
+import { AbilityGuard } from '../ability/ability.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('users')
 @UseGuards(JwtAuthGuard)
