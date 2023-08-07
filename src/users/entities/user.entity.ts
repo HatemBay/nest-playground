@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { Pet } from '../../pets/entities/pet.entity';
 import { Role } from '../../roles/entities/role.entity';
+import { Message } from '../../messages/entities/message.entity';
 
 @Entity()
 export class User {
@@ -32,6 +33,9 @@ export class User {
 
   @OneToMany(() => Pet, (pet) => pet.owner)
   pets: Relation<Pet[]>;
+
+  @OneToMany(() => Message, (message) => message.user)
+  messages: Relation<Message[]>;
 
   @ManyToMany(() => Role, (role) => role.users)
   @JoinTable()
