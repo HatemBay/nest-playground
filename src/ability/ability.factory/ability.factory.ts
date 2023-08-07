@@ -32,11 +32,12 @@ export class AbilityFactory {
     const roles = user.roles.map((role) => role.name);
 
     const userIsAdmin = roles.indexOf('ADMIN') !== -1;
+    // const userIsAdmin = true;
 
     if (userIsAdmin) {
       can(Action.Manage, 'all');
       cannot(Action.Manage, User, { orgId: { $ne: user.orgId } }).because(
-        'you can only manage uses that are in your same organisation',
+        'you can only manage users that are in your same organisation',
       );
     } else {
       can(Action.Read, User);
