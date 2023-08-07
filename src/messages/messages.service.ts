@@ -7,10 +7,21 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class MessagesService extends TypeOrmCrudService<Message> {
+  clientToUser = [];
   constructor(
     @InjectRepository(Message) private messagesRepository: Repository<Message>,
   ) {
     super(messagesRepository);
+  }
+
+  identify(name: string, clientId: string) {
+    this.clientToUser[clientId] = name;
+
+    return Object.values(this.clientToUser);
+  }
+
+  getClientName(clientId: string) {
+    return this.clientToUser[clientId];
   }
 
   async create(createMessageDto: CreateMessageDto): Promise<Message> {
