@@ -15,6 +15,9 @@ import { AbilityModule } from './ability/ability.module';
 import { RolesModule } from './roles/roles.module';
 import { MessagesModule } from './messages/messages.module';
 import config from './ormconfig';
+import { AbilityGuard } from './ability/ability.guard';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -33,6 +36,16 @@ import config from './ormconfig';
     MessagesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: AbilityGuard,
+    },
+  ],
 })
 export class AppModule {}
