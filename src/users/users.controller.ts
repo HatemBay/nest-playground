@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
   Req,
   ForbiddenException,
 } from '@nestjs/common';
@@ -16,20 +15,11 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { ForbiddenError } from '@casl/ability';
 import { CheckAbilities } from '../ability/ability.decorator';
-import {
-  AbilityFactory,
-  Action,
-} from '../ability/ability.factory/ability.factory';
-import { AbilityGuard } from '../ability/ability.guard';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Action } from '../ability/ability.factory/ability.factory';
 
 @Controller('users')
-@UseGuards(JwtAuthGuard)
 export class UsersController {
-  constructor(
-    private readonly usersService: UsersService,
-    private abilityFactory: AbilityFactory,
-  ) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @Post()
   async create(
@@ -47,21 +37,18 @@ export class UsersController {
   }
 
   @CheckAbilities({ action: Action.Read, subject: User })
-  @UseGuards(AbilityGuard)
   @Get()
   async findAll(): Promise<User[]> {
     return await this.usersService.findAll();
   }
 
   @CheckAbilities({ action: Action.Read, subject: User })
-  @UseGuards(AbilityGuard)
   @Get('id/:id')
   async findOneById(@Param('id') id: string): Promise<User> {
     return await this.usersService.findOneById(+id);
   }
 
   @CheckAbilities({ action: Action.Read, subject: User })
-  @UseGuards(AbilityGuard)
   @Get('username/:username')
   async findOneByUserName(@Param('username') username: string): Promise<User> {
     return await this.usersService.findOneByUserName(username);
@@ -87,7 +74,6 @@ export class UsersController {
 
   @Delete(':id')
   @CheckAbilities({ action: Action.Delete, subject: User })
-  @UseGuards(AbilityGuard)
   async remove(@Param('id') id: string): Promise<User> {
     return await this.usersService.removeUser(+id);
   }
