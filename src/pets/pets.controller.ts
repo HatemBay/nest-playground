@@ -18,7 +18,7 @@ export class PetsController {
 
   @Post()
   async create(@Body() createPetDto: CreatePetDto): Promise<Pet> {
-    return await this.petsService.createPet(createPetDto);
+    return await this.petsService.create(createPetDto);
   }
 
   @Get()
@@ -36,11 +36,11 @@ export class PetsController {
     @Param('id') id: string,
     @Body() updatePetDto: UpdatePetDto,
   ): Promise<Pet> {
-    return await this.petsService.updatePet(+id, updatePetDto);
+    return await this.petsService.update(+id, updatePetDto);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string): Promise<Pet> {
-    return await this.petsService.removePet(+id);
+    return await this.petsService.remove(+id);
   }
 }
