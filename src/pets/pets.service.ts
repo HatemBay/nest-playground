@@ -6,10 +6,13 @@ import { TaskCreatedEvent } from '../tasks/dto/task-created.event';
 import { CreatePetDto } from './dto/create-pet.dto';
 import { UpdatePetDto } from './dto/update-pet.dtp';
 import { Pet } from './entities/pet.entity';
+import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 
 @Injectable()
-export class PetsService {
-  constructor(@InjectRepository(Pet) private petsRepository: Repository<Pet>) {}
+export class PetsService extends TypeOrmCrudService<Pet> {
+  constructor(@InjectRepository(Pet) private petsRepository: Repository<Pet>) {
+    super(petsRepository);
+  }
 
   async createPet(createPetDto: CreatePetDto): Promise<Pet> {
     const newPet = this.petsRepository.create(createPetDto);
