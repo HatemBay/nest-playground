@@ -12,8 +12,9 @@ import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import _ from 'lodash';
+import { WsGuard } from '../ws/ws.guard';
+import { UseGuards } from '@nestjs/common';
 
-// @UseGuards(WsGuard)
 @WebSocketGateway({
   cors: {
     origin: '*',

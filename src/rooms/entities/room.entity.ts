@@ -3,10 +3,12 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   Relation,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
+import { Message } from '../../messages/entities/message.entity';
 
 @Entity()
 export class Room {
@@ -19,4 +21,7 @@ export class Room {
   @ManyToMany(() => User, (user) => user.rooms)
   @JoinTable()
   users: Relation<User[]>;
+
+  @OneToMany(() => Message, (message) => message.room)
+  messages: Relation<Message[]>;
 }

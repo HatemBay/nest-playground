@@ -1,6 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
+import { Socket } from 'socket.io';
 
 @Injectable()
 export class WsGuard implements CanActivate {
@@ -16,9 +17,6 @@ export class WsGuard implements CanActivate {
           .findOneByUserName(decoded.username)
           .then((user) => {
             if (user) {
-              // console.log('usr found');
-              // console.log(user);
-
               resolve(true);
             } else {
               // console.log('usr nn found');

@@ -49,6 +49,8 @@ export class RoomsService extends TypeOrmCrudService<Room> {
     const room = await this.findOneById(id);
     if (room) {
       room.name = updateRoomDto.name;
+      updateRoomDto.users.forEach((user) => room.users.push(user));
+      updateRoomDto.messages.forEach((message) => room.messages.push(message));
 
       return await this.roomsRepository.save(room);
     }
