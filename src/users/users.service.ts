@@ -10,6 +10,7 @@ import {
   AbilityFactory,
   Action,
 } from '../ability/ability.factory/ability.factory';
+import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 
 // export type User = {
 //   id: number;
@@ -19,26 +20,13 @@ import {
 // };
 
 @Injectable()
-export class UsersService {
-  // private readonly users: User[] = [
-  //   {
-  //     id: 1,
-  //     name: 'Hatem',
-  //     username: 'hatem',
-  //     password: 'slmslm',
-  //   },
-  //   {
-  //     id: 2,
-  //     name: 'Bayoudh',
-  //     username: 'bay',
-  //     password: 'ssssss',
-  //   },
-  // ];
-
+export class UsersService extends TypeOrmCrudService<User> {
   constructor(
     @InjectRepository(User) private usersRepository: Repository<User>,
     private abilityFactory: AbilityFactory,
-  ) {}
+  ) {
+    super(usersRepository);
+  }
 
   async createUser(
     createUserDto: CreateUserDto,

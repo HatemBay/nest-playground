@@ -11,6 +11,7 @@ import {
 import { Pet } from '../../pets/entities/pet.entity';
 import { Role } from '../../roles/entities/role.entity';
 import { Message } from '../../messages/entities/message.entity';
+import { Room } from '../../rooms/entities/room.entity';
 
 @Entity()
 export class User {
@@ -40,4 +41,7 @@ export class User {
   @ManyToMany(() => Role, (role) => role.users)
   @JoinTable()
   roles: Relation<Role[]>;
+
+  @ManyToMany(() => Room, (room) => room.users)
+  rooms: Relation<Room[]>;
 }
