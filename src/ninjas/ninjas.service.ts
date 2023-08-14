@@ -10,7 +10,7 @@ export class NinjasService {
   ];
 
   constructor() {
-    console.log(this.ninjas);
+    // console.log(this.ninjas);
   }
 
   getNinjas(weapon?: 'stars' | 'nunchucks') {

@@ -39,6 +39,7 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
   providers: [
     AppService,
     {
+      // TODO: find a way to except login method from the guard
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
