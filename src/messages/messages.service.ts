@@ -25,7 +25,6 @@ export class MessagesService extends TypeOrmCrudService<Message> {
   }
 
   async create(createMessageDto: CreateMessageDto): Promise<Message> {
-    // TODO: improve
     const newMessage = this.messagesRepository.create(createMessageDto);
 
     return await this.messagesRepository.save(newMessage);
