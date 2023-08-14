@@ -14,7 +14,7 @@ export class PetsService extends TypeOrmCrudService<Pet> {
     super(petsRepository);
   }
 
-  async createPet(createPetDto: CreatePetDto): Promise<Pet> {
+  async create(createPetDto: CreatePetDto): Promise<Pet> {
     const newPet = this.petsRepository.create(createPetDto);
 
     return await this.petsRepository.save(newPet);
@@ -46,7 +46,7 @@ export class PetsService extends TypeOrmCrudService<Pet> {
     }
   }
 
-  async updatePet(id: number, updatePetDto: UpdatePetDto): Promise<Pet> {
+  async update(id: number, updatePetDto: UpdatePetDto): Promise<Pet> {
     const pet = await this.findOneById(id);
     if (pet) {
       pet.name = updatePetDto.name;
@@ -55,7 +55,7 @@ export class PetsService extends TypeOrmCrudService<Pet> {
     }
   }
 
-  async removePet(id: number): Promise<Pet> {
+  async remove(id: number): Promise<Pet> {
     const pet = await this.findOneById(id);
 
     return await this.petsRepository.remove(pet);
