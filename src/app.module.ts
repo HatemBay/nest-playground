@@ -18,11 +18,7 @@ import config from './ormconfig';
 import { AbilityGuard } from './ability/ability.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
-<<<<<<< HEAD
 import { RoomsModule } from './rooms/rooms.module';
-=======
-import { RoomModule } from './room/room.module';
->>>>>>> refs/remotes/origin/main
 
 @Module({
   imports: [
@@ -39,11 +35,7 @@ import { RoomModule } from './room/room.module';
     AbilityModule,
     RolesModule,
     MessagesModule,
-<<<<<<< HEAD
     RoomsModule,
-=======
-    RoomModule,
->>>>>>> refs/remotes/origin/main
   ],
   controllers: [AppController],
   providers: [

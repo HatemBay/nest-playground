@@ -13,20 +13,25 @@ export class RoomsService extends TypeOrmCrudService<Room> {
   ) {
     super(roomsRepository);
   }
+
   async create(createRoomDto: CreateRoomDto): Promise<Room> {
+    console.log('createRoomDto');
+    console.log(createRoomDto);
+
     const newRoom = this.roomsRepository.create(createRoomDto);
 
     return await this.roomsRepository.save(newRoom);
   }
 
   async findAll(): Promise<Room[]> {
-    return this.roomsRepository.find({ relations: ['users'] });
+    return this.roomsRepository.find({ relations: ['users', 'messages'] });
   }
 
   async findOneById(id: number): Promise<Room> {
     try {
       const room = await this.roomsRepository.findOneOrFail({
         where: { id: id },
+        relations: ['users', 'messages'],
       });
       return room;
     } catch (err) {
@@ -38,6 +43,7 @@ export class RoomsService extends TypeOrmCrudService<Room> {
     try {
       const room = await this.roomsRepository.findOneOrFail({
         where: { name: name },
+        relations: ['users', 'messages'],
       });
       return room;
     } catch (err) {
@@ -47,10 +53,16 @@ export class RoomsService extends TypeOrmCrudService<Room> {
 
   async update(id: number, updateRoomDto: UpdateRoomDto): Promise<Room> {
     const room = await this.findOneById(id);
+    console.log(room);
+    console.log(updateRoomDto);
+
     if (room) {
-      room.name = updateRoomDto.name;
-      updateRoomDto.users.forEach((user) => room.users.push(user));
-      updateRoomDto.messages.forEach((message) => room.messages.push(message));
+      // room.name = updateRoomDto.name;
+      room.users.push(...updateRoomDto.users);
+      // room.messages.push(...updateRoomDto.messages);
+      // const finalRoom = { ...room, ...updateRoomDto };
+      console.log('finalRoom');
+      // console.log(finalRoom);
 
       return await this.roomsRepository.save(room);
     }

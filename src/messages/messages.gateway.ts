@@ -12,8 +12,6 @@ import { Server, Socket } from 'socket.io';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import _ from 'lodash';
-import { WsGuard } from '../ws/ws.guard';
-import { UseGuards } from '@nestjs/common';
 
 @WebSocketGateway({
   cors: {
@@ -41,7 +39,7 @@ export class MessagesGateway implements OnGatewayConnection {
       const user = await this.usersService.findOneById(decoded.sub);
 
       client['user'] = user; // Attach the user to the socket
-      console.log(client['user']);
+      // console.log(client['user']);
     } catch (error) {
       // Handle authentication error
       console.log(error.message);
@@ -53,9 +51,11 @@ export class MessagesGateway implements OnGatewayConnection {
   @SubscribeMessage('createMessage')
   async create(
     @MessageBody() createMessageDto: CreateMessageDto,
+    // @MessageBody('roomId') roomId: number,
     @ConnectedSocket() client: Socket,
   ) {
     createMessageDto.user = _.cloneDeep(client['user']);
+    console.log(createMessageDto);
 
     const message = await this.messagesService.create(createMessageDto);
 
@@ -69,12 +69,12 @@ export class MessagesGateway implements OnGatewayConnection {
     return this.messagesService.findAll();
   }
 
-  @SubscribeMessage('join')
-  joinRoom(
-    @MessageBody('name') name: string,
-    @ConnectedSocket() client: Socket,
-  ) {
-    return this.messagesService.identify(name, client.id);
+  @SubscribeMessage('findAllRoomMessages')
+  async findByRoom(@MessageBody('roomId') roomId: number) {
+    console.log('Room Id is:');
+    console.log(roomId);
+
+    return await this.messagesService.findByRoom(roomId);
   }
 
   @SubscribeMessage('typing')

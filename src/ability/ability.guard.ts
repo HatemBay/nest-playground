@@ -21,11 +21,11 @@ export class AbilityGuard implements CanActivate {
       this.reflector.get<RequiredRule[]>(CHECK_ABILITY, context.getHandler()) ||
       [];
 
-    console.log(rules);
+    // console.log(rules);
 
     const { user } = context.switchToHttp().getRequest();
 
-    console.log(user);
+    // console.log(user);
 
     const ability = this.caslAbilityFactory.defineAbility(user);
     try {

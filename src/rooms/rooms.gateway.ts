@@ -12,7 +12,7 @@ import { RoomsService } from './rooms.service';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { CreateRoomDto } from './dto/create-room.dto';
-import _ from 'lodash';
+import { UpdateRoomDto } from './dto/update-room.dto';
 
 @WebSocketGateway({
   origin: '*',
@@ -36,7 +36,6 @@ export class RoomsGateway implements OnGatewayConnection {
       const user = await this.usersService.findOneById(decoded.sub);
 
       client['user'] = user; // Attach the user to the socket
-      console.log(client['user']);
     } catch (error) {
       // Handle authentication error
       console.log(error.message);
@@ -45,12 +44,19 @@ export class RoomsGateway implements OnGatewayConnection {
     }
   }
 
+  @SubscribeMessage('findAllRooms')
+  async findAll() {
+    return this.roomsService.findAll();
+  }
+
   @SubscribeMessage('createRoom')
   async create(
     @MessageBody() createRoomDto: CreateRoomDto,
     @ConnectedSocket() client: Socket,
   ) {
-    createRoomDto.users.push(_.cloneDeep(client['user']));
+    createRoomDto.users = [];
+    createRoomDto.users.push(client['user']);
+
     const room = await this.roomsService.create(createRoomDto);
 
     this.server.emit('room', room);
@@ -58,9 +64,13 @@ export class RoomsGateway implements OnGatewayConnection {
     return room;
   }
 
-  // TODO: test the update method
   @SubscribeMessage('joinRoom')
-  async join(id: number, @ConnectedSocket() client: Socket) {
-    this.roomsService.update(id, { ...client['user'] });
+  async join(@MessageBody('id') id: number, @ConnectedSocket() client: Socket) {
+    const updates = new UpdateRoomDto();
+    updates.users = [];
+    updates.users.push(client['user']);
+    await this.roomsService.update(id, updates);
+
+    return client['user'].username;
   }
 }

@@ -11,5 +11,6 @@ import { JwtModule } from '@nestjs/jwt';
   imports: [TypeOrmModule.forFeature([Room]), UsersModule, JwtModule],
   controllers: [RoomsController],
   providers: [RoomsService, RoomsGateway],
+  exports: [RoomsService],
 })
 export class RoomsModule {}
