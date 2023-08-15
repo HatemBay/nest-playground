@@ -13,6 +13,7 @@ export class RoomsService extends TypeOrmCrudService<Room> {
   ) {
     super(roomsRepository);
   }
+
   async create(createRoomDto: CreateRoomDto): Promise<Room> {
     const newRoom = this.roomsRepository.create(createRoomDto);
 
@@ -20,13 +21,14 @@ export class RoomsService extends TypeOrmCrudService<Room> {
   }
 
   async findAll(): Promise<Room[]> {
-    return this.roomsRepository.find({ relations: ['users'] });
+    return this.roomsRepository.find({ relations: ['users', 'messages'] });
   }
 
   async findOneById(id: number): Promise<Room> {
     try {
       const room = await this.roomsRepository.findOneOrFail({
         where: { id: id },
+        relations: ['users', 'messages'],
       });
       return room;
     } catch (err) {
@@ -38,6 +40,7 @@ export class RoomsService extends TypeOrmCrudService<Room> {
     try {
       const room = await this.roomsRepository.findOneOrFail({
         where: { name: name },
+        relations: ['users', 'messages'],
       });
       return room;
     } catch (err) {
@@ -47,8 +50,10 @@ export class RoomsService extends TypeOrmCrudService<Room> {
 
   async update(id: number, updateRoomDto: UpdateRoomDto): Promise<Room> {
     const room = await this.findOneById(id);
+
     if (room) {
-      room.name = updateRoomDto.name;
+      room.users.push(...updateRoomDto.users);
+      room.messages.push(...updateRoomDto.messages);
 
       return await this.roomsRepository.save(room);
     }

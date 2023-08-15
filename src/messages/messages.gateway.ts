@@ -13,7 +13,6 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import _ from 'lodash';
 
-// @UseGuards(WsGuard)
 @WebSocketGateway({
   cors: {
     origin: '*',
@@ -40,7 +39,7 @@ export class MessagesGateway implements OnGatewayConnection {
       const user = await this.usersService.findOneById(decoded.sub);
 
       client['user'] = user; // Attach the user to the socket
-      console.log(client['user']);
+      // console.log(client['user']);
     } catch (error) {
       // Handle authentication error
       console.log(error.message);
@@ -68,12 +67,9 @@ export class MessagesGateway implements OnGatewayConnection {
     return this.messagesService.findAll();
   }
 
-  @SubscribeMessage('join')
-  joinRoom(
-    @MessageBody('name') name: string,
-    @ConnectedSocket() client: Socket,
-  ) {
-    return this.messagesService.identify(name, client.id);
+  @SubscribeMessage('findAllRoomMessages')
+  async findByRoom(@MessageBody('roomId') roomId: number) {
+    return await this.messagesService.findByRoom(roomId);
   }
 
   @SubscribeMessage('typing')
@@ -81,8 +77,8 @@ export class MessagesGateway implements OnGatewayConnection {
     @MessageBody('isTyping') isTyping: boolean,
     @ConnectedSocket() client: Socket,
   ) {
-    const name = await this.messagesService.getClientName(client.id);
-    // const name = client['user'].username;
+    // const name = await this.messagesService.getClientName(client.id);
+    const name = client['user'].username;
 
     client.broadcast.emit('typing', { name, isTyping });
     // this.server.emit('typing', { name, isTyping });

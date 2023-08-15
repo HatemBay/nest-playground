@@ -4,13 +4,15 @@ import { MessagesGateway } from './messages.gateway';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Message } from './entities/message.entity';
 import { AuthModule } from '../auth/auth.module';
-import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
+import { RoomsModule } from '../rooms/rooms.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Message]),
     AuthModule,
+    RoomsModule,
     UsersModule,
     JwtModule,
   ],
