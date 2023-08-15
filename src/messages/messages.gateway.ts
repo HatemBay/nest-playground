@@ -51,11 +51,9 @@ export class MessagesGateway implements OnGatewayConnection {
   @SubscribeMessage('createMessage')
   async create(
     @MessageBody() createMessageDto: CreateMessageDto,
-    // @MessageBody('roomId') roomId: number,
     @ConnectedSocket() client: Socket,
   ) {
     createMessageDto.user = _.cloneDeep(client['user']);
-    console.log(createMessageDto);
 
     const message = await this.messagesService.create(createMessageDto);
 
@@ -71,9 +69,6 @@ export class MessagesGateway implements OnGatewayConnection {
 
   @SubscribeMessage('findAllRoomMessages')
   async findByRoom(@MessageBody('roomId') roomId: number) {
-    console.log('Room Id is:');
-    console.log(roomId);
-
     return await this.messagesService.findByRoom(roomId);
   }
 
@@ -82,8 +77,8 @@ export class MessagesGateway implements OnGatewayConnection {
     @MessageBody('isTyping') isTyping: boolean,
     @ConnectedSocket() client: Socket,
   ) {
-    const name = await this.messagesService.getClientName(client.id);
-    // const name = client['user'].username;
+    // const name = await this.messagesService.getClientName(client.id);
+    const name = client['user'].username;
 
     client.broadcast.emit('typing', { name, isTyping });
     // this.server.emit('typing', { name, isTyping });

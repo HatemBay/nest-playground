@@ -15,9 +15,6 @@ export class RoomsService extends TypeOrmCrudService<Room> {
   }
 
   async create(createRoomDto: CreateRoomDto): Promise<Room> {
-    console.log('createRoomDto');
-    console.log(createRoomDto);
-
     const newRoom = this.roomsRepository.create(createRoomDto);
 
     return await this.roomsRepository.save(newRoom);
@@ -53,16 +50,10 @@ export class RoomsService extends TypeOrmCrudService<Room> {
 
   async update(id: number, updateRoomDto: UpdateRoomDto): Promise<Room> {
     const room = await this.findOneById(id);
-    console.log(room);
-    console.log(updateRoomDto);
 
     if (room) {
-      // room.name = updateRoomDto.name;
       room.users.push(...updateRoomDto.users);
-      // room.messages.push(...updateRoomDto.messages);
-      // const finalRoom = { ...room, ...updateRoomDto };
-      console.log('finalRoom');
-      // console.log(finalRoom);
+      room.messages.push(...updateRoomDto.messages);
 
       return await this.roomsRepository.save(room);
     }
