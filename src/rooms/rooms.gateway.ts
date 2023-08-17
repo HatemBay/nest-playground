@@ -12,6 +12,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
+import { Room } from './entities/room.entity';
 
 @WebSocketGateway({
   origin: '*',
@@ -64,11 +65,18 @@ export class RoomsGateway implements OnGatewayConnection {
   }
 
   @SubscribeMessage('joinRoom')
-  async join(@MessageBody('id') id: number, @ConnectedSocket() client: Socket) {
+  async join(
+    @MessageBody('room') room: Room,
+    @ConnectedSocket() client: Socket,
+  ) {
+    this.handleConnection;
+
+    client.join(room.name);
+    client.emit('roomJoined', `You have joined the room: ${room.name}`);
     const updates = new UpdateRoomDto();
     updates.users = [];
     updates.users.push(client['user']);
-    await this.roomsService.update(id, updates);
+    await this.roomsService.update(room.id, updates);
 
     return client['user'].username;
   }

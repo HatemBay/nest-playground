@@ -57,7 +57,9 @@ export class MessagesGateway implements OnGatewayConnection {
 
     const message = await this.messagesService.create(createMessageDto);
 
-    this.server.emit('message', message);
+    console.log(createMessageDto.room.name);
+
+    this.server.to(createMessageDto.room.name).emit('message', message);
 
     return message;
   }
@@ -75,12 +77,15 @@ export class MessagesGateway implements OnGatewayConnection {
   @SubscribeMessage('typing')
   async typing(
     @MessageBody('isTyping') isTyping: boolean,
+    @MessageBody('roomId') roomId: number,
     @ConnectedSocket() client: Socket,
   ) {
+    // this.handleConnection(client);
+
     // const name = await this.messagesService.getClientName(client.id);
     const name = client['user'].username;
 
-    client.broadcast.emit('typing', { name, isTyping });
+    client.broadcast.emit('typing', { name, isTyping, roomId });
     // this.server.emit('typing', { name, isTyping });
   }
 }
