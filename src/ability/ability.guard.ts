@@ -21,11 +21,16 @@ export class AbilityGuard implements CanActivate {
       this.reflector.get<RequiredRule[]>(CHECK_ABILITY, context.getHandler()) ||
       [];
 
-    // console.log(rules);
+    const skipAuth =
+      this.reflector.get<boolean>('skipAuth', context.getHandler()) || false;
+    if (skipAuth) return true;
 
     const { user } = context.switchToHttp().getRequest();
 
-    // console.log(user);
+    // * In case i somehow decided to put global ability guard first
+    // if (!user) {
+    //   throw new ForbiddenException('User not authenticated');
+    // }
 
     const ability = this.caslAbilityFactory.defineAbility(user);
     try {
